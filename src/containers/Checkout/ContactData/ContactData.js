@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import Button from "../../components/UI/Button/Button";
+import Button from "../../../components/UI/Button/Button";
 import "./ContactData.css";
-import axios from "../../axios-orders";
-import Spinner from "../../components/UI/Spinner/Spinner";
-import Input from "../../components/UI/Input/Input";
+import axios from "../../../axios-orders";
+import Spinner from "../../../components/UI/Spinner/Spinner";
+import Input from "../../../components/UI/Input/Input";
 import {connect} from 'react-redux';
-import withErrorHandler from '../../hoc/WithErrorHandler/withErrorHandler';
-import * as actions from '../../store/actions/index'
+import withErrorHandler from '../../../hoc/WithErrorHandler/withErrorHandler';
+import * as actions from '../../../store/actions/index';
+import {updateObject,checkValidity } from '../../../shared/utility';
 class ContactData extends Component {
   state = {
     orderForm: {
@@ -122,16 +123,14 @@ class ContactData extends Component {
   };
 
   inputChangedhandler = (event,inputIdentifier)=>{
-      const updatedOrderForm = {
-          ...this.state.orderForm
-      }
-      const updatedOrderFormElement = {
-          ...updatedOrderForm[inputIdentifier]
-    } 
-    updatedOrderFormElement.value = event.target.value;
-    updatedOrderFormElement.touched = true;
-    updatedOrderFormElement.valid = this.checkValidity(updatedOrderFormElement.value,updatedOrderFormElement.Validation);
+    
+      const updatedOrderFormElement = updateObject(this.state.orderForm[inputIdentifier], {
+          value : event.target.value,
+          touched : true,
+          valid : checkValidity(event.target.value,this.state.orderForm[inputIdentifier].Validation)
 
+    })
+    const updatedOrderForm = updateObject(this.state.orderForm,{[inputIdentifier]:updatedOrderFormElement})
     updatedOrderForm[inputIdentifier] = updatedOrderFormElement;
     let  formvalid = true;
     for (let inputIndetifier in updatedOrderForm){
@@ -141,19 +140,7 @@ class ContactData extends Component {
     this.setState({orderForm:updatedOrderForm,formIsValid:formvalid});
 
   }
-  checkValidity(value,rules){
-      let isValid = true;
-      if (rules.required){
-         isValid = value.trim() !== '' && isValid;
-      }
-     if (rules.minLength){
-       isValid = value.length >= rules.minLength && isValid;
-    }
-      if (rules.maxLength){
-         isValid = value.length <= rules.maxLength && isValid;
-      }
-     return isValid
-  }
+  
   render() {
     const formElementsArray = [];
     for (let key in this.state.orderForm) {

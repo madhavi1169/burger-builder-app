@@ -1,7 +1,6 @@
 import React from "react";
 import "./Order.css";
 const order = (props) => {
-  console.log(props);
 
   const ingrediants = [];
   for (let ingredientName in props.ingrediants) {

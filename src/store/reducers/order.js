@@ -1,5 +1,5 @@
 import * as actionTpes from "../actions/actionTypes";
-import { updateObject } from "../utility";
+import { updateObject } from "../../shared/utility";
 
 const initialState = {
   orders: [],
@@ -35,7 +35,7 @@ const fetchOrdersFailed = (state, action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-      
+
     case actionTpes.PURCHASE_BURGER_SUCESS:
       return purchaseBurgerSuccess(state, action);
 
