@@ -5,9 +5,9 @@ import ContactData from './ContactData/ContactData';
 import {connect} from 'react-redux';
 import * as action from '../../store/actions/index'
 
-class Checkout extends Component{
+const Checkout = props =>{
     
-    componentWillMount(){
+    // componentWillMount(){
         // const query = new URLSearchParams(this.props.location.search);
         // const ingrediants = {}
         // let price = 0;
@@ -23,28 +23,27 @@ class Checkout extends Component{
         // this.setState({ingrediants:ingrediants,totalPrice:price})
         // this.props.onInitPurchage()
 
-    }
+    // }
     
-    checkoutCancelledHandler=()=>{
-        this.props.history.goBack();
+    const checkoutCancelledHandler=()=>{
+        props.history.goBack();
 
     }
-    checkoutContinuedHandler=()=>{
-        this.props.history.replace('/checkout/contact-data');
+    const checkoutContinuedHandler=()=>{
+        props.history.replace('/checkout/contact-data');
 
     }
 
-    render(){
         let summary = <Redirect to="/" />
-        if (this.props.ings){
-            const purchasedRedirect =  this.props.purchased ? <Redirect to='/'/> :  null 
+        if (props.ings){
+            const purchasedRedirect =  props.purchased ? <Redirect to='/'/> :  null 
             summary = 
             <div>
                 {purchasedRedirect}
-            <CheckoutSummary  ingrediants={this.props.ings}
-            oncheckoutContinued={this.checkoutContinuedHandler}
-             oncheckoutCancelled={this.checkoutCancelledHandler}/>
-             <Route path={this.props.match.path+'/contact-data'}
+            <CheckoutSummary  ingrediants={props.ings}
+            oncheckoutContinued={checkoutContinuedHandler}
+             oncheckoutCancelled={checkoutCancelledHandler}/>
+             <Route path={props.match.path+'/contact-data'}
              component={ContactData} />
              </div>
         }
@@ -55,7 +54,7 @@ class Checkout extends Component{
             
         </div>
         )
-    }
+    
 
 }
 const mapStateToProp = state => {
